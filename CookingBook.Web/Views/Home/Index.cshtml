@@ -1,0 +1,82 @@
+﻿@model CookingBook.Web.Models.ViewModels.HomeViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row align-item-center g-5 py-5">
+        <div class="col-12 col-lg-6">
+            <h1 class="display-5 fw-bold lh-1 mb-3">
+                Welcome to Cooking Book!
+            </h1>
+            <p class="lead">
+                Discover a world of culinary inspiration and delicious recipes right at your
+                fingertips. Whether you're a seasoned chef or a kitchen newbie, our collection
+                of tried-and-true recipes, cooking tips, and techniques will help you create mouth-watering meals
+                with ease. Join our community, explore new flavors, and let’s make cooking fun and exciting!
+
+                Bon appétit!
+            </p>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <img src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=600"
+                 alt="Cooking Book"
+                 class="d-block mx-lg-auto img-fluid" width="800"/>
+        </div>
+    </div>
+</div>
+<form method="get"
+    asp-controller="Home",
+    asp-action="Index">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-6 d-flex">
+                <input type="text" class="form-control" 
+                name="searchQuery" value="@ViewBag.SearchQuery" />
+                <button type="submit" class="btn btn-warning ms-3">Search</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            @if (Model != null && Model.BlogPosts.Any())
+            {
+                foreach (var blogPost in Model.BlogPosts)
+                {
+                    <div class="mb-5 bg-light box-shadow p-5">
+                        <img src="@blogPost.UrlZdjęcia" alt="@blogPost.Nagłówek"
+                        class="mb-2 d-block img-fluid" />
+                        <h2 class="mb-4">@blogPost.Nagłówek</h2>
+                        <p class="mb-4">
+                            Author: @blogPost.Autor
+                            <br />
+                            Date of publication: @blogPost.DataPublikacji.ToShortDateString()
+                        </p>
+
+                        <p class="mb-4">
+                            @foreach (var tag in blogPost.Tagi)
+                            {
+                                <span class="badge bg-secondary me-1">@tag.Nazwa</span>
+                            }
+                        </p>
+
+                        <p class="mb-5">@blogPost.KrótkiOpis</p>
+
+                        <a class="btn btn-dark"
+                        asp-area=""
+                        asp-controller="Blogs"
+                        asp-action="Index"
+                        asp-route-urlHandle="@blogPost.UrlHandle"
+                        >More</a>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
